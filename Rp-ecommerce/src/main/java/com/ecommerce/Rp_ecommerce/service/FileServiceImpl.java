@@ -4,6 +4,8 @@ import com.ecommerce.Rp_ecommerce.exception.ApiException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,6 +20,8 @@ public class FileServiceImpl implements FileService{
     private static final List<String> ALLOWED_EXTENSION = Arrays.asList("jpg" , "jpeg" , "png");
 
     public String uploadNewImage(String path, MultipartFile file) throws IOException {
+        //validate image here
+        validateFile(file);
 
         String originalFileName = file.getOriginalFilename();
         String randomId = UUID.randomUUID().toString();
@@ -36,8 +40,12 @@ public class FileServiceImpl implements FileService{
         if(file.isEmpty()){
             throw new ApiException("file should not be empty");
         }
+        // file should not be more than 2 MB
+        if(file.getSize() > 2 * 1024 *1024){
+            throw new ApiException("file limit exceed");
+        }
         String fileName = file.getOriginalFilename();
-        String extension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
+        String extension = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
         if(!ALLOWED_EXTENSION.contains(extension)){
             throw new ApiException("upload a valid file");
         }
@@ -48,6 +56,12 @@ public class FileServiceImpl implements FileService{
             throw new ApiException("file must be an image");
         }
 
-    }
+        // now checking the actual content byte by byte  making use of ImageIO built-in class in java
+        // for validating the content of the file that is to be validated .
 
+        BufferedImage img = ImageIO.read(file.getInputStream());
+        if(img == null){
+            throw new ApiException("invalid file type , Corrupted  file ");
+        }
+    }
 }

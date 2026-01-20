@@ -7,6 +7,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,5 +45,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleResourceNotFoundException(ApiException e){
         String message = e.getMessage();
         return new ResponseEntity<>(message , HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<Map<String , Object>> invalidSizeHandler(MaxUploadSizeExceededException e){
+        Map<String , Object> response = new HashMap<>();
+        response.put("status" , HttpStatus.BAD_REQUEST.value());
+        response.put("message" , "file is too large , please upload file less than 2 MB");
+        response.put("error" , "file size limit exceeded");
+        return new ResponseEntity<>(response , HttpStatus.BAD_REQUEST);
     }
 }
