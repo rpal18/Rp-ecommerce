@@ -9,9 +9,13 @@ import java.io.IOException;
 public interface ProductService {
     ProductDTO addProduct(ProductDTO productDTO, Long categoryId);
 
-    ProductResponse getAllProduct(Long categoryId);
+    ProductResponse getAllProductByCategory(Long categoryId , Integer pageNumber , Integer pageSize ,
+                                  String sortBy , String sortOrder);
 
-    ProductResponse getFromKeyword(String key);
+    ProductResponse getAllProduct(Integer pageNumber , Integer pageSize ,
+                                  String sortBy , String sortOrder);
+
+    ProductResponse getFromKeyword(String key , Integer pageNumber, Integer pageSize, String  sortBy, String sortOrder);
 
     ProductDTO updateProduct(Long productId, ProductDTO productDTO);
 

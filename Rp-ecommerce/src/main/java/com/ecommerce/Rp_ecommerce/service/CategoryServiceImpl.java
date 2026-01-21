@@ -101,7 +101,8 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO updateCategory(CategoryDTO categorydto, Long oldCategoryId) {
 
         Category category = modelMapper.map(categorydto, Category.class);
-        Category newCatr = categoryRepository.findById(oldCategoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "Category", oldCategoryId));
+        Category newCatr = categoryRepository.findById(oldCategoryId).orElseThrow(() -> new ResourceNotFoundException
+                ("Category", "Category", oldCategoryId));
         category.setCategoryId(oldCategoryId);
         Category savedCategory = categoryRepository.save(category);
 

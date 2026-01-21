@@ -1,6 +1,4 @@
 package com.ecommerce.Rp_ecommerce.service;
-
-import com.ecommerce.Rp_ecommerce.model.Category;
 import com.ecommerce.Rp_ecommerce.payload.CategoryDTO;
 import com.ecommerce.Rp_ecommerce.payload.CategoryResponse;
 

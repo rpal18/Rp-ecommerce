@@ -1,7 +1,4 @@
 package com.ecommerce.Rp_ecommerce.payload;
-
-import com.ecommerce.Rp_ecommerce.model.Category;
-
 import java.util.List;
 
 public class CategoryResponse {
