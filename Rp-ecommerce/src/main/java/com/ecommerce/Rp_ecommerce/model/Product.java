@@ -23,9 +23,12 @@ public class Product {
     private double discount;
     private double specialPrice;
 
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private User user ;
 
-    public Product(Long id, String productName, String description, Integer quantity, String image, double price, double discount, double specialPrice, Category category) {
-        this.id = id;
+
+    public Product( String productName, String description, Integer quantity, String image, double price, double discount, double specialPrice, Category category) {
         this.productName = productName;
         this.description = description;
         this.quantity = quantity;
@@ -44,6 +47,14 @@ public class Product {
     @JoinColumn(name = "category_category_id")
     private Category category;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -54,10 +65,6 @@ public class Product {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getProductName() {
