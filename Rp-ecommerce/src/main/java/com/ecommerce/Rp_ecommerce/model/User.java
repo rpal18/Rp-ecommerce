@@ -43,7 +43,8 @@ public class User {
     private String password ;
 
     // defining seller side of the things
-    @OneToMany(cascade = {CascadeType.MERGE  , CascadeType.PERSIST}  ,
+    @OneToMany(mappedBy = "user"
+            ,cascade = {CascadeType.MERGE  , CascadeType.PERSIST}  ,
     orphanRemoval = true)
     private Set<Product> products ;
 
