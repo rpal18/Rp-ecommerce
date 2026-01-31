@@ -5,100 +5,85 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "user"  , uniqueConstraints = {
+@Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email")
 })
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
-    @Size(min = 2 , max = 20 , message = "Invalid length of user Name ")
+    private Long userId;
+
+    @Column(name = "username", nullable = false)
     @NotBlank
-    @Column(name = "username")
-    private String name;
+    @Size(min = 2, max = 20, message = "Username must be between 2-20 characters")
+    private String username;
 
     @Email
-    @NotBlank(message = " please enter email !!")
-    @Column(name = "email")
+    @NotBlank(message = "Email is required")
+    @Column(name = "email", nullable = false)
     private String email;
 
     @NotBlank
-    private String mobileNumber ;
-    // since user can have multiple roles
-    // so here , many-to-many relationship will be made
+    private String mobileNumber;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable( name = "user_role" , joinColumns = @JoinColumn(name = "user_id")
-     , inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private  Set<Role> userRole = new HashSet<>() ;
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     @NotBlank
     @NotNull
-    @Size(min = 6 , max = 30 , message = " password must have at least 6 character")
-    private String password ;
+    @Size(min = 6, max = 30, message = "Password must have at least 6 characters")
+    private String password;
 
-    // defining seller side of the things
-    @OneToMany(mappedBy = "user"
-            ,cascade = {CascadeType.MERGE  , CascadeType.PERSIST}  ,
-    orphanRemoval = true)
-    private Set<Product> products ;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Product> products = new HashSet<>();
 
-    public Set<Role> getRoles() {
-        return userRole;
-    }
-    public User() {
-    }
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "user_address",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id"))
+    private Set<Address> addresses = new HashSet<>();
 
-    public User(String name, String email, String mobileNumber, Set<Role> userRole, String password) {
-        this.name = name;
+    public User() {}
+
+    public User(String username, String email, String mobileNumber, String password, Set<Role> roles) {
+        this.username = username;
         this.email = email;
         this.mobileNumber = mobileNumber;
-        this.userRole = userRole;
         this.password = password;
+        this.roles = roles;
     }
 
-    public String getName() {
-        return name;
-    }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public String getMobileNumber() { return mobileNumber; }
+    public void setMobileNumber(String mobileNumber) { this.mobileNumber = mobileNumber; }
 
-    public String getMobileNumber() {
-        return mobileNumber;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
+    public Set<Role> getRoles() { return roles; }
+    public void setRoles(Set<Role> roles) { this.roles = roles; }
 
-    public Set<Role> getUserRole() {
-        return userRole;
-    }
 
-    public void setUserRole(Set<Role> userRole) {
-        this.userRole = userRole;
-    }
+    public Set<Product> getProducts() { return products; }
+    public void setProducts(Set<Product> products) { this.products = products; }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public Set<Address> getAddresses() { return addresses; }
+    public void setAddresses(Set<Address> addresses) { this.addresses = addresses; }
 }

@@ -2,7 +2,6 @@ package com.ecommerce.Rp_ecommerce.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Entity
 public class Role {
@@ -14,6 +13,14 @@ public class Role {
 
     public Role(AppRole role) {
         this.roleName = role;
+    }
+
+    public AppRole getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(AppRole roleName) {
+        this.roleName = roleName;
     }
 
     public Role() {

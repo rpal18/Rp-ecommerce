@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse> handleResourceNotFoundException(ResourceNotFoundException e){
         String message = e.getMessage();
         ApiResponse body = new ApiResponse(
-                "item that you are looking for , Not found!!",
+                "item that you are looking for  , Not found!!",
                 false,
                 HttpStatus.NOT_FOUND.value()
 
