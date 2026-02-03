@@ -54,4 +54,13 @@ public class GlobalExceptionHandler {
         response.put("error" , "file size limit exceeded");
         return new ResponseEntity<>(response , HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(UserAlreadyFoundException.class)
+    public ResponseEntity<?> duplicateUserExceptionHandler(UserAlreadyFoundException e){
+        Map<String , Object> response = new HashMap<>();
+        response.put("status"  , HttpStatus.CONFLICT.value());
+        response.put("message" , " User already found !!");
+        response.put("error" , " conflict , please login instaed!!");
+        return new ResponseEntity<>(response , HttpStatus.CONFLICT );
+    }
 }
