@@ -1,16 +1,18 @@
-package com.ecommerce.Rp_ecommerce.security.jwt;
+package com.ecommerce.Rp_ecommerce.security.jwt.payload;
 
 import java.util.List;
 
-public class LoginResponse {
+public class UserInfoResponse {
+    private Long userId;
     private String jwtToken;
     private String userName;
     private List<String> roles;
 
-    public LoginResponse(String jwtToken, String userName, List<String> roles) {
+    public UserInfoResponse( Long userId , String jwtToken, String userName, List<String> roles) {
         this.jwtToken = jwtToken;
         this.userName = userName;
         this.roles = roles;
+        this.userId = userId;
     }
 
     public String getJwtToken() {
@@ -36,4 +38,5 @@ public class LoginResponse {
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
+
 }
