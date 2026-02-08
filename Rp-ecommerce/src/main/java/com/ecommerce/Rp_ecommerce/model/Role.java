@@ -9,6 +9,7 @@ public class Role {
     private Integer RoleId;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private AppRole roleName;
 
     public Role(AppRole role) {
