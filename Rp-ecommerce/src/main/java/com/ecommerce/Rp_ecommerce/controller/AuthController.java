@@ -1,2 +1,106 @@
-package com.ecommerce.Rp_ecommerce.controller;public class AuthController {
+package com.ecommerce.Rp_ecommerce.controller;
+
+import com.ecommerce.Rp_ecommerce.payload.SignUpResponse;
+import com.ecommerce.Rp_ecommerce.security.jwt.JwtUtils;
+import com.ecommerce.Rp_ecommerce.security.jwt.payload.LoginRequest;
+import com.ecommerce.Rp_ecommerce.security.jwt.payload.UserInfoResponse;
+import com.ecommerce.Rp_ecommerce.security.jwt.payload.UserRequestDTO;
+import com.ecommerce.Rp_ecommerce.security.jwt.services.UserDetailsImpl;
+import com.ecommerce.Rp_ecommerce.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    private AuthenticationManager authenticationManager;
+
+    private JwtUtils jwtUtils;
+
+    private UserService userService;
+    @Autowired
+    public AuthController(AuthenticationManager authenticationManager ,
+                          JwtUtils jwtUtils ,  UserService userService){
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+        this.jwtUtils = jwtUtils;
+
+    }
+
+
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest){
+        /*
+        step by step flow :
+        1) we extract username and password from loginRequest
+        2) create a Authentication type object , that is unauthenticated initially
+        3) after that we authenticate the Unauthenticated object ( by making use of AuthenticationManager )
+        4) After that , we save this authenticated object into spring context so that we do not need for authentication
+        with each request .
+         */
+
+        System.out.println("1. Login Hit!");
+        System.out.println("2. Receiving Username: " + loginRequest.getUserName());
+        System.out.println("3. Receiving Password: " + loginRequest.getPassword());
+
+        try{
+            Authentication unauthenticatedObject = new UsernamePasswordAuthenticationToken( loginRequest.getUserName(),loginRequest.getPassword()
+                    );
+
+            Authentication authenticatedObject = authenticationManager.authenticate(unauthenticatedObject);
+
+            SecurityContextHolder.getContext().setAuthentication(authenticatedObject);
+            /*
+            Now we need to generate Jwt authentication token , as we need to send this with every request
+            that will be validated against authenticated object saved security context .
+             */
+
+            UserDetailsImpl userDetails = (UserDetailsImpl) authenticatedObject.getPrincipal();
+
+            String jwtToken = jwtUtils.generateTokenFromUserName(userDetails);
+
+            List<String> roles = authenticatedObject.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+
+            UserInfoResponse response  = new UserInfoResponse(userDetails.getId()  , jwtToken , userDetails.getUsername(), roles);
+            return new ResponseEntity<>(response , HttpStatus.OK);
+
+        }catch(AuthenticationException e){
+            Map<String , Object> map = new HashMap<>();
+            map.put("status"  , false);
+            map.put("message" , " Bad request");
+            return new ResponseEntity<>(map , HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser( @Valid @RequestBody UserRequestDTO signUpRequest){
+        SignUpResponse response = userService.registerUser(signUpRequest);
+       return new ResponseEntity<>(response , HttpStatus.CREATED);
+    }
+
+    //signup as admin
+
+    @PostMapping("/signup-admin")
+    public ResponseEntity<?> resgisterAdmin(@Valid @RequestBody UserRequestDTO userRequestDTO){
+        SignUpResponse response = userService.registerAdmin(userRequestDTO);
+        return ResponseEntity.ok(response);
+    }
 }

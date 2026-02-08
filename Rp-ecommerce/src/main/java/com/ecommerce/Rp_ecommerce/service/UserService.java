@@ -7,4 +7,6 @@ import com.ecommerce.Rp_ecommerce.security.jwt.payload.UserRequestDTO;
 public interface UserService {
 
     SignUpResponse registerUser(UserRequestDTO signUpRequest);
+
+    SignUpResponse registerAdmin(UserRequestDTO userRequestDTO);
 }
