@@ -2,6 +2,7 @@ package com.ecommerce.Rp_ecommerce.security.jwt;
 
 import com.ecommerce.Rp_ecommerce.security.jwt.services.UserDetailsImpl;
 import com.ecommerce.Rp_ecommerce.security.jwt.services.UserDetailsServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -76,7 +77,7 @@ public class WebSecurityConfig {
                                 requestMatchers("/api/auth/**").permitAll().
                                 requestMatchers("/v3/api-doc/**").permitAll().
                                 requestMatchers("/swagger-ui/**").permitAll().
-                                requestMatchers("/api/admin/**").permitAll().
+                               // requestMatchers("/api/admin/**").permitAll().
                                 requestMatchers("/api/test/**").permitAll().anyRequest().authenticated()
         );
         http.authenticationProvider(authenticationProvider());
@@ -95,7 +96,7 @@ public class WebSecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web -> web.ignoring().requestMatchers("/v3/api-docs" ,
                 "/swagger-resources/**" , "/configuration-ui" , "configuration/security" ,
-                "/swagger-ui.html" , "/webjars/**"
+                "/swagger-ui.html" , "/webjars/**" , "/api/auth/**"
                 ));
     }
 }
