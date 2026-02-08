@@ -40,7 +40,7 @@ public class User {
 
     @NotBlank
     @NotNull
-    @Size(min = 6, max = 30, message = "Password must have at least 6 characters")
+    @Size(min = 6, message = "Password must have at least 6 characters")
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
