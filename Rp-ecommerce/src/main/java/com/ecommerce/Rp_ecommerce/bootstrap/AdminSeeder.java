@@ -5,19 +5,22 @@ import com.ecommerce.Rp_ecommerce.model.Role;
 import com.ecommerce.Rp_ecommerce.model.User;
 import com.ecommerce.Rp_ecommerce.repository.RoleRepository;
 import com.ecommerce.Rp_ecommerce.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
-
+@Component
 public class AdminSeeder implements CommandLineRunner {
     private RoleRepository roleRepository;
     private UserRepository userRepository;
 
     private PasswordEncoder passwordEncoder;
     @Autowired
+
     public AdminSeeder(RoleRepository roleRepository , UserRepository userRepository ,
                        PasswordEncoder passwordEncoder ){
 
@@ -28,6 +31,7 @@ public class AdminSeeder implements CommandLineRunner {
     }
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
 
             Role adminRole = roleRepository.findByRoleName(AppRole.ROLE_ADMIN)
