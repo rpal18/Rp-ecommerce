@@ -41,8 +41,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         logger.debug("AuthTokenFilter called for uri : {} " , request.getRequestURI());
         try {
 
-            String token = jwtUtils.getJwtFromRequest(request);
-            logger.debug("AuthTokenFilter.java : {}" , token);
+           String token = parseJwt(request);
             //need to validate the token first
             if(token!=null && jwtUtils.validateToken(token)){
                 String userName = jwtUtils.UserNameFromJwtToken(token);
@@ -80,5 +79,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         --------------------------------------------------------------------------------------------------------------------
          */
         filterChain.doFilter(request , response);
+    }
+
+    private String parseJwt(HttpServletRequest request){
+        String jwtToken = jwtUtils.getJwtFromCookies(request);
+        logger.debug("AuthTokenFilter.java : {}" , jwtToken);
+        return jwtToken;
     }
 }

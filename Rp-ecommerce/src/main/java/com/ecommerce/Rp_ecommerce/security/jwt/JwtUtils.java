@@ -1,17 +1,22 @@
 package com.ecommerce.Rp_ecommerce.security.jwt;
 
+import com.ecommerce.Rp_ecommerce.security.jwt.services.UserDetailsImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.WebUtils;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
@@ -25,21 +30,46 @@ public class JwtUtils {
 
     @Value("${spring.app.secretKey}")
     private String secretKey;
+    @Value("${spring.app.jwtCookieName}")
+    private String jwtCookie;
     //adding logger
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
-
+/*
+------------------------------------------------------------------------------------------------------------------------
     //getting Jwt header from http request
+------------------------------------------------------------------------------------------------------------------------
+
     public String getJwtFromRequest(HttpServletRequest request){
         String bearerRequest = request.getHeader("Authorization");
         logger.debug("Authorization Header: {} " , bearerRequest);
         if(bearerRequest!=null && bearerRequest.startsWith("Bearer ")){
-            String token = bearerRequest.substring(7);
-            return token ;
+            return bearerRequest.substring(7);
         }
         // now extracting token only as Authorization Header have "Bearer <> "
         // here  , we just want <>.
         return null;
 
+    }
+
+ Note : commented because we are going to make use of cookie based authentication otherwise it will
+        intercept the request.
+
+------------------------------------------------------------------------------------------------------------------------
+     */
+
+    //getting jwt from cookie
+    public String getJwtFromCookies(HttpServletRequest request){
+        Cookie cookie = WebUtils.getCookie(request , jwtCookie);
+        return cookie.getValue();
+    }
+
+    //generating jwtCookies
+    public ResponseCookie generateJwtCookie(UserDetailsImpl userDetails){
+        String jwtToken = generateTokenFromUserName(userDetails);
+        return ResponseCookie.from(jwtCookie , jwtToken).
+                path("/api")
+                .maxAge(24*60*60*10).
+                httpOnly(false).build();
     }
 
     // method for generating token form user name
