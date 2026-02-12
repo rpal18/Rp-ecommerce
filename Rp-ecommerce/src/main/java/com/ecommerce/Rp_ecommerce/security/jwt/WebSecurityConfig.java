@@ -96,7 +96,7 @@ public class WebSecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web -> web.ignoring().requestMatchers("/v3/api-docs" ,
                 "/swagger-resources/**" , "/configuration-ui" , "configuration/security" ,
-                "/swagger-ui.html" , "/webjars/**" , "/api/auth/**"
+                "/swagger-ui.html" , "/webjars/**"
                 ));
     }
 }

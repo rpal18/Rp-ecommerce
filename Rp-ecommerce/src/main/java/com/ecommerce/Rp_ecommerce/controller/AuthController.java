@@ -19,14 +19,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -106,4 +104,25 @@ public class AuthController {
         SignUpResponse response = userService.registerAdmin(userRequestDTO);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/user")
+    public ResponseEntity<String> currentUserName(Authentication authentication) {
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl userDetails) {
+            return ResponseEntity.ok(userDetails.getUsername());
+        }
+        return ResponseEntity.ok("NULL");
+    }
+
+    @GetMapping("/user-detail")
+    public ResponseEntity<?> getUserDetail(Authentication authentication){
+      UserDetailsImpl userDetails = (UserDetailsImpl)authentication.getPrincipal();
+      List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+      UserInfoResponse response = new UserInfoResponse(userDetails.getId(),
+              userDetails.getUsername() , roles
+      );
+      return ResponseEntity.ok().body(response);
+    }
+
+
+
 }
