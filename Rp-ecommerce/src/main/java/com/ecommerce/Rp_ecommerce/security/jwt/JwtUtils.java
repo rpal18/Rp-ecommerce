@@ -120,4 +120,10 @@ public class JwtUtils {
         }
         return false;
     }
+
+    //generating clean cookie to override existing cookie
+    //this is essential for logging out
+    public ResponseCookie getCleanCookie(){
+        return ResponseCookie.from(jwtCookie , null).path("/api").build();
+    }
 }
