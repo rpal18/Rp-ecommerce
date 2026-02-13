@@ -51,6 +51,8 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id"))
     private Set<Address> addresses = new HashSet<>();
+    @OneToOne(mappedBy = "user" , cascade = {CascadeType.PERSIST , CascadeType.MERGE , CascadeType.REMOVE} , orphanRemoval = true)
+    private Cart cart;
 
     public User() {}
 

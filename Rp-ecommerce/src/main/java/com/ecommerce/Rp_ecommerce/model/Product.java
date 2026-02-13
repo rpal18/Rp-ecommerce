@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Product {
     @Id
@@ -26,8 +29,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private User user ;
-
-
+    @OneToMany(mappedBy = "product" , cascade = {CascadeType.MERGE , CascadeType.PERSIST , CascadeType.REMOVE} , fetch = FetchType.EAGER)
+    private List<CartItem> products = new ArrayList<>();
     public Product( String productName, String description, Integer quantity, String image, double price, double discount, double specialPrice, Category category) {
         this.productName = productName;
         this.description = description;
