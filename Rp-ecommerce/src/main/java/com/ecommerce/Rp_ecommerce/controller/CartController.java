@@ -5,7 +5,10 @@ import com.ecommerce.Rp_ecommerce.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -20,5 +23,12 @@ public class CartController {
                                               @PathVariable Integer quantity){
         CartDTO response  = cartService.addProductToCart(productId , quantity );
         return new ResponseEntity<>(response  , HttpStatus.CREATED);
+    }
+
+    @GetMapping("/carts")
+    @PreAuthorize(("hasRole('ADMIN')"))
+    public ResponseEntity<List<CartDTO>> fetchAllCarts(){
+        List<CartDTO> cartDTOList = cartService.fetchAllCarts();
+        return new ResponseEntity<>(cartDTOList , HttpStatus.FOUND);
     }
 }
