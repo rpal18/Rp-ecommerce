@@ -1,7 +1,11 @@
 package com.ecommerce.Rp_ecommerce.controller;
 
+import com.ecommerce.Rp_ecommerce.model.Cart;
 import com.ecommerce.Rp_ecommerce.payload.CartDTO;
+import com.ecommerce.Rp_ecommerce.repository.CartRepository;
 import com.ecommerce.Rp_ecommerce.service.CartService;
+import com.ecommerce.Rp_ecommerce.utils.AuthUtils;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +17,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class CartController {
-    private CartService cartService ;
+    private final CartService cartService ;
+    private final AuthUtils authUtil;
+
+    private final CartRepository cartRepository;
     @Autowired
-    public CartController( CartService cartService){
+    public CartController( CartService cartService ,
+                           AuthUtils authUtil ,
+                           CartRepository cartRepository){
         this.cartService = cartService;
+        this.authUtil = authUtil;
+        this.cartRepository = cartRepository;
     }
     @PostMapping("/carts/products/{productId}/quantity/{quantity}")
     public ResponseEntity<?> addProductToCart(@PathVariable Long productId ,
@@ -31,4 +42,19 @@ public class CartController {
         List<CartDTO> cartDTOList = cartService.fetchAllCarts();
         return new ResponseEntity<>(cartDTOList , HttpStatus.FOUND);
     }
+    @GetMapping("/carts/user")
+    @PreAuthorize(("hasRole('USER')"))
+    public ResponseEntity<CartDTO> fetchUserCart(){
+        /*
+        Here , I am making use of two things two parameter ( email and cartId ) for scalability.
+        we would have better control in future if we want to add more cart to a single user .
+         */
+
+        String emailId = authUtil.loggedInEmail();
+        Cart cart = cartRepository.findCartByEmail(emailId);
+        Long cartId = cart.getCartId();
+        CartDTO cartDTO = cartService.fetchUserCart(emailId , cartId);
+        return new ResponseEntity<>(cartDTO , HttpStatus.FOUND);
+    }
+
 }
