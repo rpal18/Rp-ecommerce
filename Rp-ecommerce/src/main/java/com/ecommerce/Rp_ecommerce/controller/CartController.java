@@ -5,7 +5,6 @@ import com.ecommerce.Rp_ecommerce.payload.CartDTO;
 import com.ecommerce.Rp_ecommerce.repository.CartRepository;
 import com.ecommerce.Rp_ecommerce.service.CartService;
 import com.ecommerce.Rp_ecommerce.utils.AuthUtils;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,5 +55,11 @@ public class CartController {
         CartDTO cartDTO = cartService.fetchUserCart(emailId , cartId);
         return new ResponseEntity<>(cartDTO , HttpStatus.FOUND);
     }
-
+  @PutMapping("/cart/product/{productId}/quantity/{operation}")
+    public ResponseEntity<CartDTO> updateCartProduct(@PathVariable  Long productId ,
+                                                      @PathVariable String operation){
+       CartDTO cartDTO = cartService.updateProductQuantityInCart(productId ,
+               operation.equalsIgnoreCase("delete") ? -1 : 1);
+       return new ResponseEntity<>(cartDTO , HttpStatus.OK);
+  }
 }
