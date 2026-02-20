@@ -154,6 +154,7 @@ public class CartServiceImpl implements CartService {
         CartItem updatedCartItem = cartItemRepository.save(cartItem);
         if(updatedCartItem.getQuantity() == 0){
             cartItemRepository.deleteById(updatedCartItem.getCartItemId());
+
         }
 
         CartDTO cartDTO = modelMapper.map(cart , CartDTO.class);
@@ -166,6 +167,21 @@ public class CartServiceImpl implements CartService {
 
         cartDTO.setProducts(list);
         return cartDTO;
+    }
+
+    @Override
+    public String deleteProductFromCart(Long cartId , Long productId) {
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() ->
+                new ResourceNotFoundException("Cart" , "Cart id" , cartId));
+        CartItem cartItem = cartItemRepository.findByCartIdAndProductId(cartId , productId);
+        if(cartItem == null){
+            throw  new ResourceNotFoundException("Product" , "product id" , productId);
+        }
+        cart.setTotalCartPrice(cart.getTotalCartPrice() - (cartItem.getProductPrice() * cartItem.getQuantity()));
+        cartItemRepository.deleteCartItemByProductIdAndCartId(cartId , productId);
+
+        return "product successfully has removed";
+
     }
 
     private Cart createCart() {
