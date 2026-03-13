@@ -25,7 +25,7 @@ public class AuthUtils {
         return user.getEmail();
     }
 
-    public User loggedInUserName(){
+    public User loggedInUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails =  (UserDetailsImpl)authentication.getPrincipal();
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(()->
