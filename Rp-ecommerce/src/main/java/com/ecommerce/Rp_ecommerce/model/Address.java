@@ -33,10 +33,9 @@ public class Address {
     @Size(min = 4 , message = " Country name should be more than 3 character")
     private String country ;
 
-    // Since one many user can have multiple address  , similarly many addresses belongs to the same user
-    // That is why we will make this relationship as many to many
-    @ManyToMany(mappedBy = "addresses")
-    private List<User> users = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public String getStreet() {
         return street;
@@ -44,6 +43,14 @@ public class Address {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getCity() {
@@ -77,7 +84,5 @@ public class Address {
     public void setCountry(String country) {
         this.country = country;
     }
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
+
 }
