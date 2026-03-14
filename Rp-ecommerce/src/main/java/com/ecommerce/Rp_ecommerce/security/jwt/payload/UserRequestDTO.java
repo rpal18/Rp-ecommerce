@@ -1,9 +1,7 @@
 package com.ecommerce.Rp_ecommerce.security.jwt.payload;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import com.ecommerce.Rp_ecommerce.model.AddressType;
+import jakarta.validation.constraints.*;
 
 public class UserRequestDTO {
 
@@ -39,10 +37,15 @@ public class UserRequestDTO {
     @NotBlank
     @Size(min = 4 , message = " Country name should be more than 3 character")
     private String country ;
+    @NotBlank
+    @Size(min = 10 , max = 50 , message = "landmark must be of min 10 and max 50 character long")
+    private String landmark;
+    @NotNull
+    private AddressType addressType;
 
 
     public UserRequestDTO(String username, String email, String mobileNumber, String password, String street, String city,
-                          String zipCode, String state, String country ) {
+                          String zipCode, String state, String country , String landmark  , AddressType addressType) {
         this.username = username;
         this.email = email;
         this.mobileNumber = mobileNumber;
@@ -52,6 +55,8 @@ public class UserRequestDTO {
         this.zipCode = zipCode;
         this.state = state;
         this.country = country;
+        this.landmark = landmark;
+        this.addressType = addressType;
     }
 
 
@@ -128,5 +133,21 @@ public class UserRequestDTO {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
+    }
+
+    public AddressType getAddressType() {
+        return addressType;
+    }
+
+    public void setAddressType(AddressType addressType) {
+        this.addressType = addressType;
     }
 }

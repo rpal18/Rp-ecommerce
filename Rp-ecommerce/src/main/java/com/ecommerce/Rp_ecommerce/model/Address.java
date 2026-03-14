@@ -2,6 +2,8 @@ package com.ecommerce.Rp_ecommerce.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.modelmapper.internal.bytebuddy.build.ToStringPlugin;
 
@@ -10,7 +12,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "adresses")
+@Table(name = "addresses")
 public class Address {
 
     @Id
@@ -19,19 +21,30 @@ public class Address {
     @NotBlank
     @Size(min = 5  , message = "Street should be of 5 or more than 5 character")
     private String street ;
+    @NotBlank
+    @Size(min = 10 , max = 50 , message = "landmark must be of min 10 and max 50 character long")
+    private String landmark;
+
+    private Boolean isDefault  = false;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private AddressType addressType;
 
     @NotBlank
     @Size(min = 5 , message = " City name should be more than 4 character")
     private String city ;
     @NotBlank
     @Size(min = 6 , message = "Zip code should be of valid length ")
-    private String zipCode ;
+    @Pattern(regexp = "\\d{6}")
+    private String zipCode;
     @NotBlank
     @Size(min=3 , message = " State name should be of more than 2 character")
     private String state;
     @NotBlank
     @Size(min = 4 , message = " Country name should be more than 3 character")
-    private String country ;
+    private String country;
+    @NotBlank
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -85,4 +98,43 @@ public class Address {
         this.country = country;
     }
 
+    public Long getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(Long addressId) {
+        this.addressId = addressId;
+    }
+
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
+    }
+
+    public Boolean getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Boolean aDefault) {
+        isDefault = aDefault;
+    }
+
+    public AddressType getAddressType() {
+        return addressType;
+    }
+
+    public void setAddressType(AddressType addressType) {
+        this.addressType = addressType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

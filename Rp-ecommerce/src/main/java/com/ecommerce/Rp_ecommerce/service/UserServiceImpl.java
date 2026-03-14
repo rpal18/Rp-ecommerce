@@ -53,6 +53,9 @@ public class UserServiceImpl implements UserService{
         address.setState(signUpRequest.getState());
         address.setStreet(signUpRequest.getStreet());
         address.setZipCode(signUpRequest.getZipCode());
+        address.setAddressType(signUpRequest.getAddressType());
+        address.setLandmark(signUpRequest.getLandmark());
+        address.setName(signUpRequest.getUsername());
         Set<Address> addressSet = new HashSet<>();
         addressSet.add(address);
         user.setAddresses(addressSet);
