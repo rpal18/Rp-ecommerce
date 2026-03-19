@@ -192,7 +192,7 @@ public class CartServiceImpl implements CartService {
 
         Cart cart = new Cart();
         cart.setTotalCartPrice(0.0);
-        cart.setUser(authUtil.loggedInUserName());
+        cart.setUser(authUtil.loggedInUser());
         return cartRepository.save(cart);
     }
 }
