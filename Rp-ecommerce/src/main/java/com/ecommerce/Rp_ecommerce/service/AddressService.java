@@ -15,4 +15,6 @@ public interface AddressService {
     AddressResponseDTO updateUserAddress(Long addressId, AddressDTO addressDTO);
 
     String setAddressAsDefault(Long userId , Long addressId);
+
+    String deleteAddress(Long addressId);
 }

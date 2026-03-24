@@ -98,4 +98,14 @@ Since , I am making use of Transaction so jpa will do it automatically
 
         return "This address is now default";
     }
+
+    @Override
+    @Transactional
+    public String deleteAddress(Long addressId) {
+        Address address = addressRepository.findById(addressId).
+                orElseThrow(()->new ResourceNotFoundException("Address" , "Id" , addressId));
+
+        addressRepository.delete(address);
+        return "Address deleted successfully !!";
+    }
 }
