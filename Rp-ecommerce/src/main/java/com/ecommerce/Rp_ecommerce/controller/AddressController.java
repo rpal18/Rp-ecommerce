@@ -39,8 +39,19 @@ public class AddressController {
         return new ResponseEntity<>(response , HttpStatus.OK);
     }
 
+    @PutMapping("/users/addresses/{addressId}")
+    public ResponseEntity<AddressResponseDTO> updateUserAddress(@PathVariable Long addressId ,
+                                                               @Valid @RequestBody AddressDTO addressDTO){
+        AddressResponseDTO addressResponseDTO = addressService.updateUserAddress(addressId , addressDTO);
+        return new ResponseEntity<>(addressResponseDTO , HttpStatus.OK);
+    }
 
-
-
+   @PatchMapping("/users/addresses/{addressId}/default")
+    public ResponseEntity<String> setAddressAsDefault(@PathVariable Long addressId){
+       User user = authUtils.loggedInUser();
+       Long userId = user.getUserId();
+       String messsage = addressService.setAddressAsDefault(userId ,addressId);
+       return new ResponseEntity<>(messsage , HttpStatus.OK);
+   }
 
 }

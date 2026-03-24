@@ -11,4 +11,8 @@ public interface AddressService {
     AddressResponseDTO createAddress(AddressDTO addressDTO , User user);
 
     List<AddressResponseDTO> getUserAddresses(User user);
+
+    AddressResponseDTO updateUserAddress(Long addressId, AddressDTO addressDTO);
+
+    String setAddressAsDefault(Long userId , Long addressId);
 }
