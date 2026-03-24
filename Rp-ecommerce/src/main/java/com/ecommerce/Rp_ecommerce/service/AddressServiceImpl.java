@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -39,5 +40,13 @@ public class AddressServiceImpl implements AddressService{
 
         Address savedAddress = addressRepository.save(address);
         return modelMapper.map(savedAddress , AddressResponseDTO.class);
+    }
+
+    @Override
+    public List<AddressResponseDTO> getUserAddresses(User user) {
+        Set<Address> addressList = user.getAddresses();
+        List<AddressResponseDTO> response = addressList.stream().
+                map(element -> modelMapper.map(element , AddressResponseDTO.class)).toList();
+        return response;
     }
 }
