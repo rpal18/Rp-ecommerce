@@ -56,6 +56,28 @@ public class OrderItem {
         }
     }
 
+    public OrderItem() {
+    }
+
+    public OrderItem(Long orderItemId, Order order, Product product, String productName,
+                     Integer quantity, Double priceAtPurchase, Double totalPrice,
+                     Double discount, Double finalAmount, Double shippingCharge,
+                     String trackingId, String deliveryPartner, String notes) {
+        this.orderItemId = orderItemId;
+        this.order = order;
+        this.product = product;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.priceAtPurchase = priceAtPurchase;
+        this.totalPrice = totalPrice;
+        this.discount = discount;
+        this.finalAmount = finalAmount;
+        this.shippingCharge = shippingCharge;
+        this.trackingId = trackingId;
+        this.deliveryPartner = deliveryPartner;
+        this.notes = notes;
+    }
+
     public Long getOrderItemId() {
         return orderItemId;
     }

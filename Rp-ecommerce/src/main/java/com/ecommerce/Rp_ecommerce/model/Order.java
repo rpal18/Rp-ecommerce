@@ -81,6 +81,33 @@ public class Order {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public Order() {
+    }
+
+    public Order(Long orderId, User user, List<OrderItem> orderItems, Double totalAmount,
+                 OrderStatus orderStatus, PaymentStatus paymentStatus, String paymentMethod,
+                 String transactionId, String street, String city, String state, String zipCode,
+                 String country, LocalDateTime orderDate, LocalDateTime createdAt,
+                 LocalDateTime updatedAt, LocalDateTime deliveredAt) {
+        this.orderId = orderId;
+        this.user = user;
+        this.orderItems = orderItems;
+        this.totalAmount = totalAmount;
+        this.orderStatus = orderStatus;
+        this.paymentStatus = paymentStatus;
+        this.paymentMethod = paymentMethod;
+        this.transactionId = transactionId;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.country = country;
+        this.orderDate = orderDate;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deliveredAt = deliveredAt;
+    }
+
     public Long getOrderId() {
         return orderId;
     }
