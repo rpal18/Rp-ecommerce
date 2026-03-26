@@ -34,10 +34,6 @@ public class Order {
     @Column(nullable = false)
     private PaymentStatus paymentStatus;
 
-    @Column(nullable = false)
-    private String paymentMethod;
-
-    private String transactionId;
 
     @NotBlank
     @Size(min = 5, max = 100)
@@ -68,6 +64,8 @@ public class Order {
     private LocalDateTime updatedAt;
 
     private LocalDateTime deliveredAt;
+    @OneToMany(mappedBy = "order" , cascade = CascadeType.ALL , orphanRemoval = true)
+    private List<Payment> payments = new ArrayList<>();
 
 
     @PrePersist
@@ -85,8 +83,8 @@ public class Order {
     }
 
     public Order(Long orderId, User user, List<OrderItem> orderItems, Double totalAmount,
-                 OrderStatus orderStatus, PaymentStatus paymentStatus, String paymentMethod,
-                 String transactionId, String street, String city, String state, String zipCode,
+                 OrderStatus orderStatus, PaymentStatus paymentStatus,
+                 String street, String city, String state, String zipCode,
                  String country, LocalDateTime orderDate, LocalDateTime createdAt,
                  LocalDateTime updatedAt, LocalDateTime deliveredAt) {
         this.orderId = orderId;
@@ -95,8 +93,6 @@ public class Order {
         this.totalAmount = totalAmount;
         this.orderStatus = orderStatus;
         this.paymentStatus = paymentStatus;
-        this.paymentMethod = paymentMethod;
-        this.transactionId = transactionId;
         this.street = street;
         this.city = city;
         this.state = state;
@@ -156,21 +152,6 @@ public class Order {
         this.paymentStatus = paymentStatus;
     }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
 
     public String getStreet() {
         return street;
