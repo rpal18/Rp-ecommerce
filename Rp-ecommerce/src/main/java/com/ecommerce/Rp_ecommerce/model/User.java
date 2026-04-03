@@ -1,10 +1,8 @@
 package com.ecommerce.Rp_ecommerce.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,6 +28,7 @@ public class User {
     private String email;
 
     @NotBlank
+    @Pattern(regexp = "^(?:\\+91|0)?[6-9]\\d{9}$")
     private String mobileNumber;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})

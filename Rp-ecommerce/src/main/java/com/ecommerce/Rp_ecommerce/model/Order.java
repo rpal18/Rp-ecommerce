@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class Order {
 
 
     @Column(nullable = false)
-    private Double totalAmount;
+    private BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -55,6 +56,14 @@ public class Order {
     @Size(min = 4, max = 50)
     private String country;
 
+    @NotBlank
+    @Size(min = 4, max = 50)
+    private String landmark;
+
+    @NotBlank
+    @Pattern(regexp = "^[6-9]\\d{9}$")
+    private String mobileNumber;
+
 
     private LocalDateTime orderDate;
 
@@ -82,10 +91,10 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long orderId, User user, List<OrderItem> orderItems, Double totalAmount,
+    public Order(Long orderId, User user, List<OrderItem> orderItems, BigDecimal totalAmount,
                  OrderStatus orderStatus, PaymentStatus paymentStatus,
                  String street, String city, String state, String zipCode,
-                 String country, LocalDateTime orderDate, LocalDateTime createdAt,
+                 String country, String landmark, String mobileNumber, LocalDateTime orderDate, LocalDateTime createdAt,
                  LocalDateTime updatedAt, LocalDateTime deliveredAt) {
         this.orderId = orderId;
         this.user = user;
@@ -98,6 +107,8 @@ public class Order {
         this.state = state;
         this.zipCode = zipCode;
         this.country = country;
+        this.landmark = landmark;
+        this.mobileNumber = mobileNumber;
         this.orderDate = orderDate;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -128,11 +139,11 @@ public class Order {
         this.orderItems = orderItems;
     }
 
-    public Double getTotalAmount() {
+    public BigDecimal getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Double totalAmount) {
+    public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -223,5 +234,29 @@ public class Order {
 
     public void setDeliveredAt(LocalDateTime deliveredAt) {
         this.deliveredAt = deliveredAt;
+    }
+
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
     }
 }

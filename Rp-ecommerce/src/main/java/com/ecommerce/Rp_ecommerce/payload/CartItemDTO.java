@@ -1,14 +1,16 @@
 package com.ecommerce.Rp_ecommerce.payload;
 
+import java.math.BigDecimal;
+
 public class CartItemDTO {
     private Long cartItemId;
     private CartDTO cart;
     private ProductDTO productDTO;
     private Integer quantity;
-    private Double discount;
-    private Double productPrice;
+    private BigDecimal discount;
+    private BigDecimal productPrice;
 
-    public CartItemDTO(Long cartItemId, CartDTO cart, ProductDTO productDTO, Integer quantity, Double discount, Double productPrice) {
+    public CartItemDTO(Long cartItemId, CartDTO cart, ProductDTO productDTO, Integer quantity, BigDecimal discount, BigDecimal productPrice) {
         this.cartItemId = cartItemId;
         this.cart = cart;
         this.productDTO = productDTO;
@@ -52,19 +54,19 @@ public class CartItemDTO {
         this.quantity = quantity;
     }
 
-    public Double getDiscount() {
+    public BigDecimal getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Double discount) {
+    public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
 
-    public Double getProductPrice() {
+    public BigDecimal getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(Double productPrice) {
+    public void setProductPrice(BigDecimal productPrice) {
         this.productPrice = productPrice;
     }
 }

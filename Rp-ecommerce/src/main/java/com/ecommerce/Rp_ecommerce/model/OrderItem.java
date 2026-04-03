@@ -2,8 +2,9 @@ package com.ecommerce.Rp_ecommerce.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_items")
@@ -23,24 +24,20 @@ public class OrderItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
-
-    @NotBlank
-    private String productName;
-
     @NotNull
     @Min(1)
     private Integer quantity;
 
     @NotNull
-    private Double priceAtPurchase;
+    private BigDecimal priceAtPurchase;
 
     @NotNull
-    private Double totalPrice;
+    private BigDecimal totalPrice;
 
 
-    private Double discount;
-    private Double finalAmount;
-    private Double shippingCharge;
+    private BigDecimal discount;
+    private BigDecimal finalAmount;
+    private BigDecimal shippingCharge;
 
     private String trackingId;
     private String deliveryPartner;
@@ -52,21 +49,21 @@ public class OrderItem {
     @PrePersist
     public void calculateTotal() {
         if (priceAtPurchase != null && quantity != null) {
-            this.totalPrice = priceAtPurchase * quantity;
+            BigDecimal quan = BigDecimal.valueOf(quantity);
+            this.totalPrice = priceAtPurchase.multiply(quan);
         }
     }
 
     public OrderItem() {
     }
 
-    public OrderItem(Long orderItemId, Order order, Product product, String productName,
-                     Integer quantity, Double priceAtPurchase, Double totalPrice,
-                     Double discount, Double finalAmount, Double shippingCharge,
+    public OrderItem(Long orderItemId, Order order, Product product,
+                     Integer quantity, BigDecimal priceAtPurchase, BigDecimal totalPrice,
+                     BigDecimal discount, BigDecimal finalAmount, BigDecimal shippingCharge,
                      String trackingId, String deliveryPartner, String notes) {
         this.orderItemId = orderItemId;
         this.order = order;
         this.product = product;
-        this.productName = productName;
         this.quantity = quantity;
         this.priceAtPurchase = priceAtPurchase;
         this.totalPrice = totalPrice;
@@ -102,14 +99,6 @@ public class OrderItem {
         this.product = product;
     }
 
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
@@ -118,43 +107,43 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public Double getPriceAtPurchase() {
+    public BigDecimal getPriceAtPurchase() {
         return priceAtPurchase;
     }
 
-    public void setPriceAtPurchase(Double priceAtPurchase) {
+    public void setPriceAtPurchase(BigDecimal priceAtPurchase) {
         this.priceAtPurchase = priceAtPurchase;
     }
 
-    public Double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    public Double getDiscount() {
+    public BigDecimal getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Double discount) {
+    public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
 
-    public Double getFinalAmount() {
+    public BigDecimal getFinalAmount() {
         return finalAmount;
     }
 
-    public void setFinalAmount(Double finalAmount) {
+    public void setFinalAmount(BigDecimal finalAmount) {
         this.finalAmount = finalAmount;
     }
 
-    public Double getShippingCharge() {
+    public BigDecimal getShippingCharge() {
         return shippingCharge;
     }
 
-    public void setShippingCharge(Double shippingCharge) {
+    public void setShippingCharge(BigDecimal shippingCharge) {
         this.shippingCharge = shippingCharge;
     }
 

@@ -1,6 +1,8 @@
 package com.ecommerce.Rp_ecommerce.model;
 
 public enum OrderStatus {
+
+    PENDING,
     CREATED,
     CONFIRMED,
     SHIPPED,

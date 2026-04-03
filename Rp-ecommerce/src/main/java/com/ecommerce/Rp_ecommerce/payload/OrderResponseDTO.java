@@ -1,5 +1,6 @@
 package com.ecommerce.Rp_ecommerce.payload;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class OrderResponseDTO {
     private String orderStatus;
     private String paymentStatus;
 
-    private Double totalAmount;
+    private BigDecimal totalAmount;
 
     private List<OrderItemDTO> items;
 
@@ -28,7 +29,7 @@ public class OrderResponseDTO {
     }
 
     public OrderResponseDTO(Long orderId, String orderStatus, String paymentStatus,
-                            Double totalAmount, List<OrderItemDTO> items,
+                            BigDecimal totalAmount, List<OrderItemDTO> items,
                             String street, String city, String state,
                             String zipCode, String country,
                             LocalDateTime orderDate, LocalDateTime createdAt,
@@ -72,11 +73,11 @@ public class OrderResponseDTO {
         this.paymentStatus = paymentStatus;
     }
 
-    public Double getTotalAmount() {
+    public BigDecimal getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Double totalAmount) {
+    public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
 
