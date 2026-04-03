@@ -1,14 +1,15 @@
 package com.ecommerce.Rp_ecommerce.payload;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CartDTO {
     private Long cartId;
-    private Double totalPrice = 0.0;
+    private BigDecimal totalPrice = BigDecimal.ZERO;
     private List<ProductDTO> products = new ArrayList<>();
 
-    public CartDTO(Long cartId, Double totalPrice, List<ProductDTO> products) {
+    public CartDTO(Long cartId, BigDecimal totalPrice, List<ProductDTO> products) {
         this.cartId = cartId;
         this.totalPrice = totalPrice;
         this.products = products;
@@ -25,11 +26,11 @@ public class CartDTO {
         this.cartId = cartId;
     }
 
-    public Double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 

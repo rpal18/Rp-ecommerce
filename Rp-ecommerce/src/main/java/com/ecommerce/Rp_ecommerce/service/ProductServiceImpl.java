@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -53,9 +54,9 @@ public class ProductServiceImpl implements ProductService {
             Product product = new Product();
             product.setProductName(productDTO.getName());
             product.setPrice(productDTO.getPrice());
-            double actualPrice = productDTO.getPrice();
-            double discountRate = productDTO.getDiscount();
-            double specialPrice = (actualPrice - (actualPrice * 0.01 * discountRate));
+            BigDecimal actualPrice = productDTO.getPrice();
+            BigDecimal discountRate = productDTO.getDiscount();
+            BigDecimal specialPrice = actualPrice.subtract(actualPrice.multiply(discountRate).divide(BigDecimal.valueOf(100)));
 
             product.setSpecialPrice(specialPrice);
             product.setDescription(productDTO.getDescription());
@@ -144,9 +145,9 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(productDTO.getPrice());
         product.setDescription(productDTO.getDescription());
         product.setImage(productDTO.getImage());
-        double actualPrice = productDTO.getPrice();
-        double discountRate = productDTO.getDiscount();
-        double specialPrice = (actualPrice - (actualPrice * 0.01 * discountRate));
+        BigDecimal actualPrice = productDTO.getPrice();
+        BigDecimal discountRate = productDTO.getDiscount();
+        BigDecimal specialPrice = actualPrice.subtract(actualPrice.multiply(discountRate).divide(BigDecimal.valueOf(100)));
         product.setSpecialPrice(productDTO.getSpecialPrice());
         Product savedProduct = productRepository.save(product);
         return modelMapper.map(product, ProductDTO.class);

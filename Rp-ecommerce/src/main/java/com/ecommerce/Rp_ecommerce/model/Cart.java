@@ -2,6 +2,7 @@ package com.ecommerce.Rp_ecommerce.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +19,9 @@ public class Cart {
             orphanRemoval = true)
     private List<CartItem> cartItemList = new ArrayList<>();
 
-    private double totalCartPrice = 0.0;
+    private BigDecimal totalCartPrice = BigDecimal.ZERO;
 
-    public Cart(Long cartId, User user, List<CartItem> cartItemList, double totalCartPrice) {
+    public Cart(Long cartId, User user, List<CartItem> cartItemList, BigDecimal totalCartPrice) {
         this.cartId = cartId;
         this.user = user;
         this.cartItemList = cartItemList;
@@ -54,11 +55,11 @@ public class Cart {
         this.cartItemList = cartItemList;
     }
 
-    public double getTotalCartPrice() {
+    public BigDecimal getTotalCartPrice() {
         return totalCartPrice;
     }
 
-    public void setTotalCartPrice(double totalCartPrice) {
+    public void setTotalCartPrice(BigDecimal totalCartPrice) {
         this.totalCartPrice = totalCartPrice;
     }
 }

@@ -2,6 +2,8 @@ package com.ecommerce.Rp_ecommerce.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 public class CartItem {
 
@@ -17,10 +19,10 @@ public class CartItem {
 
     private Integer quantity;
 
-    private Double discount;
-    private Double productPrice;
+    private BigDecimal discount;
+    private BigDecimal productPrice;
 
-    public CartItem(Long cartItemId, Cart cart, Product product, Integer quantity, Double discount, Double productPrice) {
+    public CartItem(Long cartItemId, Cart cart, Product product, Integer quantity, BigDecimal discount, BigDecimal productPrice) {
         this.cartItemId = cartItemId;
         this.cart = cart;
         this.product = product;
@@ -64,19 +66,19 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public Double getDiscount() {
+    public BigDecimal getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Double discount) {
+    public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
 
-    public Double getProductPrice() {
+    public BigDecimal getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(Double productPrice) {
+    public void setProductPrice(BigDecimal productPrice) {
         this.productPrice = productPrice;
     }
 }

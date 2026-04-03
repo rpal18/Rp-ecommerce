@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,16 +23,18 @@ public class Product {
 
     private String image;
 
-    private double price;
-    private double discount;
-    private double specialPrice;
+    private BigDecimal price;
+    private BigDecimal discount;
+    private BigDecimal specialPrice;
+    private int reservedQuantity = 0;
 
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private User user ;
     @OneToMany(mappedBy = "product" , cascade = {CascadeType.MERGE , CascadeType.PERSIST , CascadeType.REMOVE} , fetch = FetchType.EAGER)
     private List<CartItem> products = new ArrayList<>();
-    public Product( String productName, String description, Integer quantity, String image, double price, double discount, double specialPrice, Category category) {
+    public Product( String productName, String description, Integer quantity, String image, BigDecimal price, BigDecimal discount,
+                    BigDecimal specialPrice, Category category , int reservedQuantity) {
         this.productName = productName;
         this.description = description;
         this.quantity = quantity;
@@ -40,6 +43,7 @@ public class Product {
         this.discount = discount;
         this.specialPrice = specialPrice;
         this.category = category;
+        this.reservedQuantity = reservedQuantity;
     }
 
     public Product() {
@@ -102,27 +106,35 @@ public class Product {
         this.image = image;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public double getDiscount() {
+    public BigDecimal getDiscount() {
         return discount;
     }
 
-    public void setDiscount(double discount) {
+    public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
 
-    public double getSpecialPrice() {
+    public BigDecimal getSpecialPrice() {
         return specialPrice;
     }
 
-    public void setSpecialPrice(double specialPrice) {
+    public void setSpecialPrice(BigDecimal specialPrice) {
         this.specialPrice = specialPrice;
+    }
+
+    public int getReservedQuantity() {
+        return reservedQuantity;
+    }
+
+    public void setReservedQuantity(int reservedQuantity) {
+        this.reservedQuantity = reservedQuantity;
     }
 }

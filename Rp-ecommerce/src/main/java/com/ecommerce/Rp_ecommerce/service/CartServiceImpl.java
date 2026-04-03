@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
@@ -71,7 +72,7 @@ public class CartServiceImpl implements CartService {
 
 
         product.setQuantity(product.getQuantity() - quantity);
-        cart.setTotalCartPrice(cart.getTotalCartPrice() + (product.getSpecialPrice() * quantity));
+        cart.setTotalCartPrice(cart.getTotalCartPrice().add(product.getSpecialPrice().multiply(BigDecimal.valueOf(quantity))));
         Cart savedCart = cartRepository.save(cart);
 
         CartDTO cartDTO = modelMapper.map(savedCart, CartDTO.class);
@@ -149,7 +150,7 @@ public class CartServiceImpl implements CartService {
         cartItem.setProductPrice(product.getSpecialPrice());
         cartItem.setQuantity(cartItem.getQuantity() + quantity);
         cartItem.setDiscount(product.getDiscount());
-        cart.setTotalCartPrice(cart.getTotalCartPrice() +  (cartItem.getProductPrice() * quantity ) );
+        cart.setTotalCartPrice(cart.getTotalCartPrice().add(cartItem.getProductPrice().multiply(BigDecimal.valueOf(quantity ))));
         cartRepository.save(cart);
         CartItem updatedCartItem = cartItemRepository.save(cartItem);
         if(updatedCartItem.getQuantity() == 0){
@@ -177,7 +178,8 @@ public class CartServiceImpl implements CartService {
         if(cartItem == null){
             throw  new ResourceNotFoundException("Product" , "product id" , productId);
         }
-        cart.setTotalCartPrice(cart.getTotalCartPrice() - (cartItem.getProductPrice() * cartItem.getQuantity()));
+        cart.setTotalCartPrice(cart.getTotalCartPrice().subtract(cartItem.getProductPrice().multiply(BigDecimal.
+                valueOf(cartItem.getQuantity()))));
         cartItemRepository.deleteCartItemByProductIdAndCartId(cartId , productId);
 
         return "product successfully has removed";
@@ -191,7 +193,7 @@ public class CartServiceImpl implements CartService {
         }
 
         Cart cart = new Cart();
-        cart.setTotalCartPrice(0.0);
+        cart.setTotalCartPrice(BigDecimal.ZERO);
         cart.setUser(authUtil.loggedInUser());
         return cartRepository.save(cart);
     }

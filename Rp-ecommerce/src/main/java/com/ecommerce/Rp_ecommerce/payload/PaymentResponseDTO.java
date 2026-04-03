@@ -1,5 +1,6 @@
 package com.ecommerce.Rp_ecommerce.payload;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class PaymentResponseDTO {
@@ -13,7 +14,7 @@ public class PaymentResponseDTO {
 
     private String transactionId;
 
-    private Double amount;
+    private BigDecimal amount;
 
     private LocalDateTime paymentTime;
 
@@ -27,7 +28,7 @@ public class PaymentResponseDTO {
 
     public PaymentResponseDTO(Long paymentId, Long orderId, String status,
                               String paymentMethod, String transactionId,
-                              Double amount, LocalDateTime paymentTime,
+                              BigDecimal amount, LocalDateTime paymentTime,
                               String paymentGatewayPaymentId,
                               String paymentGatewayStatus,
                               String paymentGatewayResponseMessage,
@@ -87,11 +88,11 @@ public class PaymentResponseDTO {
         this.transactionId = transactionId;
     }
 
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
