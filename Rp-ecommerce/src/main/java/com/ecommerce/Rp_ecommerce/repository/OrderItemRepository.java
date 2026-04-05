@@ -1,4 +1,9 @@
 package com.ecommerce.Rp_ecommerce.repository;
 
-public interface OrderItemRepository extends org.springframework.data.jpa.repository.JpaRepository<com.ecommerce.Rp_ecommerce.model.OrderItem, java.lang.Long> {
+import com.ecommerce.Rp_ecommerce.model.OrderItem;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 }
