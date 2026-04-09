@@ -29,5 +29,15 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### ignore log files ###
+*.log
+
+### ignore os-specific files  ###
+.DS_Store
+Thumbs.db
+
+### ignore environment variable files ###
+.env
+
 ### VS Code ###
 .vscode/
